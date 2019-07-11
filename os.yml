@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: List
+items:
+  - apiVersion: v1
+    kind: ImageStream
+    metadata:
+      name: custom-jenkins
+      namespace: openshift
+  - apiVersion: v1
+    kind: BuildConfig
+    metadata:
+      name: custom-jenkins-build
+      namespace: openshift
+    spec:
+      source:                       
+        git:
+          uri: https://github.com/cokeSchlumpf/os-custom-jenkins
+          ref: "master"
+        type: Git
+      strategy:                     
+        sourceStrategy:
+          from:
+            kind: ImageStreamTag
+            name: jenkins:latest
+            namespace: openshift
+        type: Source
+      output:                       
+        to:
+          kind: ImageStreamTag
+          name: custom-jenkins:latest
